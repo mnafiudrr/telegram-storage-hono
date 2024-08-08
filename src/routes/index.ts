@@ -17,6 +17,16 @@ app.get('/', (c) => {
   return c.json(sampleJson)
 })
 
+app.get('/get-db', (c) => {
+  const sampleJson = {
+    name: 'Honoa',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT
+  }
+  
+  return c.json(sampleJson)
+})
+
 
 app.route('/api', api)
 

@@ -2,8 +2,7 @@ import { Context } from "hono"
 import { sign } from "hono/jwt"
 import { SequelizeScopeError } from "sequelize"
 import { checkHash, hash } from "@/utils/crypt"
-import User from "@/db/models/User"
-import Role from "@/db/models/Role"
+import { Role, User } from "@/db/models"
 
 class AuthController {
   login = async (c: Context) => {

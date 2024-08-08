@@ -1,12 +1,16 @@
-# Gunakan image Bun resmi
+# Use Bun
 FROM oven/bun
 
 # Set work directory
 WORKDIR /app
 
-# Salin file package.json dan src
+# Copy source code
 COPY package.json ./
 COPY src ./src
+COPY .babelrc ./
+COPY babel.config.js ./
+COPY tsconfig.json ./
+COPY .sequelizerc ./
 
 # Install dependencies
 RUN bun install
@@ -14,5 +18,5 @@ RUN bun install
 # Expose port
 EXPOSE 3000
 
-# Jalankan aplikasi
-CMD ["bun", "run", "--hot", "src/index.ts"]
+# Run server
+CMD ["bun", "run", "dev"]

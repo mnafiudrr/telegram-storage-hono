@@ -14,6 +14,7 @@ const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   host: dbHost,
   dialect: dbDialect,
   port: parseInt(dbPort as string),
+  // logging: false, // set to console.log to see the raw SQL queries
 });
 
 export default sequelize;
