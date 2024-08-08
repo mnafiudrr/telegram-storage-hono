@@ -11,17 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Install sshpass
-      run: |
-        sudo apt-get install sshpass
-
-    - name: Access server and open app directory
-      run: |
-        sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
-        cd ${{ secrets.SSH_PATH }}
-      
-    - name: Build the Docker image
-      run: docker compose --env-file .env up --build -d
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        port: 22
+        script: |
+          cd ${{ secrets.SSH_PATH }}
+          docker compose --env-file .env up --build -d
