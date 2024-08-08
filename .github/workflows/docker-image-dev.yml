@@ -11,6 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Check HOST
+      run: echo '${{ secrets.HOST }}'
+
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.3
       with:
