@@ -2,9 +2,7 @@ name: Build Docker Dev Server
 
 on:
   push:
-    branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
+    branches: [ "develop" ]
 
 jobs:
 
@@ -13,18 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    #- uses: actions/checkout@v4 
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install sshpass
-      run: |
-        sudo apt-get install sshpass
-
-    - name: Access server and open app directory
-      run: |
-        sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
-        cd ${{ secrets.SSH_PATH }}
-      
-    - name: Build the Docker image
-      run: docker compose --env-file .env up --build -d
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST_DEV }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd ${{ secrets.PATH }}
+          ls -al
+          docker compose --env-file .env up --build -d
