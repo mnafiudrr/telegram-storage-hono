@@ -19,9 +19,7 @@ app.get('/', (c) => {
 
 app.get('/get-db', (c) => {
   const sampleJson = {
-    name: 'Honoa',
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT
+    name: 'Hono Check DB'
   }
   
   return c.json(sampleJson)
