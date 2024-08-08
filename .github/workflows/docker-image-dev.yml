@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    #- uses: actions/checkout@v4 
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install sshpass
+      run: |
+        sudo apt-get install sshpass
+
+    - name: Access server and open app directory
+      run: |
+        sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+        cd ${{ secrets.SSH_PATH }}
+      
+    - name: Build the Docker image
+      run: docker compose --env-file .env up --build -d
