@@ -14,9 +14,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Check HOST
-      run: echo ${{ secrets.HOST_DEV }}
-
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -26,4 +23,5 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd ${{ secrets.SSH_PATH }}
+          ls -al
           docker compose --env-file .env up --build -d
