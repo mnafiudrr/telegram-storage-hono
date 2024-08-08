@@ -22,6 +22,6 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          cd ${{ secrets.SSH_PATH }}
+          cd ${{ secrets.PATH }}
           ls -al
           docker compose --env-file .env up --build -d
