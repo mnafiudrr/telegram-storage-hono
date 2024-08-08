@@ -21,9 +21,9 @@ jobs:
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.HOST_DEV }}
-        username: ${{ secrets.SSH_USER }}
-        password: ${{ secrets.SSH_PASSWORD }}
-        port: 22
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
         script: |
           cd ${{ secrets.SSH_PATH }}
           docker compose --env-file .env up --build -d
