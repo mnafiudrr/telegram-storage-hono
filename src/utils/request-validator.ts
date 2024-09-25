@@ -17,7 +17,12 @@ const requestValidator = (target: 'json', rules : RulesType) => {
           return c.json({ status: 400, message: "Content-Type must be application/json" });
         }
 
-        request = await c.req.json();
+        try {
+          request = await c.req.json();
+        } catch (error) {
+          c.status(400);
+          return c.json({ status: 400, message: "Invalid JSON" });
+        }
       } else {
         request = await c.req.formData();
       }
