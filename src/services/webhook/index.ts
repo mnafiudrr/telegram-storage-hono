@@ -2,6 +2,8 @@ import { ChatType, WebhookRequestType } from "./types"
 import CommandService from "./commandService";
 import textService from "./textService";
 import { TeleChat } from "@/db/models";
+import { PhotoService } from "./photoService";
+import { VideoService } from "./videoService";
 
 class WebhookService {
   
@@ -65,11 +67,9 @@ class WebhookService {
     } else if (message.text) {
       return new textService();
     } else if (message.photo) {
-      console.log('photo')
-      return false;
+      return new PhotoService();
     } else if (message.video) {
-      console.log('video')
-      return false;
+      return new VideoService();
     } else if (message.audio) {
       console.log('audio')
       return false;

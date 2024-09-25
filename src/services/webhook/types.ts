@@ -95,7 +95,7 @@ export type VideoType = {
   duration: number;
   width: number;
   height: number;
-  mime_type?: string;
+  mime_type: string;
   thumb?: ThumbType;
   thumbnail?: ThumbType;
   file_id: string;
