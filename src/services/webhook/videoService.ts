@@ -1,5 +1,6 @@
 import { Connect, TeleChat } from "@/db/models";
 import { WebhookRequestType } from "./types";
+import FileService from "../FileService";
 
 
 export class VideoService {
@@ -17,16 +18,16 @@ export class VideoService {
         message: 'no video'
       }
 
-    const url = `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT_TOKEN}`;
+    const fullUrl = await FileService.getFileFromSource(video.file_id);
+    const thumbnail = await FileService.getFileFromSource(video.thumb?.file_id || video.thumbnail?.file_id || '');
 
-    const getFile = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/getFile?file_id=${video.file_id}`);
-
-    const result = await getFile.json();
-    console.log('getFile.json()');
-    console.log(result.result);
-    console.log(`${url}/${result.result.file_path}`);
-    
-    this.TeleChatModel?.sendMessage(`${url}/${result.result.file_path} \nPlease add the extention to ${ video.mime_type.split('/')[1] }`, 'text');
+    FileService.storeFromSource({
+      chat_id: this.TeleChatModel?.chatId as number,
+      source: fullUrl,
+      mimes: video.mime_type,
+      thumbnail: thumbnail,
+      size: video.file_size
+    });
 
     return {
       message: 'success'
