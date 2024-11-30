@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import api from './api'
+import content from './content';
 
 const app = new Hono();
 
@@ -27,5 +28,6 @@ app.get('/get-db', (c) => {
 
 
 app.route('/api', api)
+app.route('/content', content)
 
 export default app

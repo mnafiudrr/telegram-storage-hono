@@ -1,5 +1,6 @@
-import { Connect, TeleChat } from "@/db/models";
+import { TeleChat } from "@/db/models";
 import { WebhookRequestType } from "./types";
+import FileService from "../FileService";
 
 
 export class PhotoService {
@@ -17,16 +18,16 @@ export class PhotoService {
         message: 'no photo'
       }
 
-    const url = `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT_TOKEN}`;
+    const fullUrl = await FileService.getFileFromSource(photo[photo.length - 1].file_id);
+    const thumbnail = await FileService.getFileFromSource(photo[0].file_id);
 
-    const getFile = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/getFile?file_id=${photo[photo.length - 1].file_id}`);
-
-    const result = await getFile.json();
-    console.log('getFile.json()');
-    console.log(result.result);
-    console.log(`${url}/${result.result.file_path}`);
-    
-    this.TeleChatModel?.sendMessage(`${url}/${result.result.file_path}`, 'text');
+    FileService.storeFromSource({
+      chat_id: this.TeleChatModel?.chatId as number,
+      source: fullUrl,
+      mimes: 'image/jpg',
+      thumbnail: thumbnail,
+      size: photo[photo.length - 1].file_size
+    });
 
     return {
       message: 'success'

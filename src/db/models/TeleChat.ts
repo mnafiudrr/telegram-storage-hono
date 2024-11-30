@@ -37,7 +37,11 @@ class TeleChat extends Model<TeleChatAttributes, TeleChatInput> implements TeleC
     connect: Association<TeleChat, Connect>;
   };
 
-  public async sendMessage(message: string, type: string): Promise<void> {
+  public async sendMessage(message: string, type?: string): Promise<void> {
+
+    if (!type) {
+      type = 'text';
+    }
 
     const data = new URLSearchParams();
     data.append('chat_id', this.chatId.toString());
